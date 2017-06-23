@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <html xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://xmlns.jcp.org/jsf/html"
+              xmlns:f="http://xmlns.jcp.org/jsf/core"
+              xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+              xmlns:p="http://primefaces.org/ui">
+
+            <h:head>
+                <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" http-equiv="X-UA-Conpatible" />
+                <h:outputStylesheet library="css" name="bootstrap.min.css" />   
+                <h:outputScript library="js" name="formulario.js"/>
+                <title>Formulario</title>
+                <style>
+                    .calendarClass input{
+                        width: 300px;
+                    }
+                </style>
+            </h:head>
+            <h:body>
+                <center>
+                    <h:form id="form">
+                        <p:panel header="DATOS PERSONALES">
+                            <h:panelGrid class="panel-info" columns="3">
+
+
+                                <h:outputLabel id="td" value="Tipo de documento"/>
+                                <h:selectOneMenu value="#{personaBean.persona.cedula}" class="form-control" style="text-transform: uppercase; width: 307px;">
+                                    <f:selectItem itemValue="C.C" itemLabel="Cedula de ciudadania"/>
+                                    <f:selectItem itemValue="T.I" itemLabel="Tarjeta de identidad"/>
+                                    <f:selectItem itemValue="C.E" itemLabel="Cedula de extranjeria"/>
+                                </h:selectOneMenu>
+                                <h:message for="td"/>
+                                <h:outputLabel value="Numero de identificacion"/>
+                                <h:inputText  onkeypress="return numero(event)" class="form-control" a:placeholder="NUMERO DE IDENTIFICACION" id="num" value="#{personaBean.persona.numero}" required="true" label="Numero de identificacion requerido" style="width:300px;"/>
+                                <h:message for="num"/>
+                                <h:outputLabel value="Nombre"/>
+                                <h:inputText a:placeholder="NOMBRE" class="form-control" id="nom" value="#{personaBean.persona.nombre}" required="true" label="Nombre requerido" style="width:300px; text-transform: uppercase"/>
+                                <h:message for="nom"/>
+                                <h:outputLabel value="Apellido"/>
+                                <h:inputText a:placeholder="APELLIDO" class="form-control" id="ape" value="#{personaBean.persona.apellido}" required="true" label="Apellido requerido" onblur="aMayusculas(this.value, this.id)" style="width:300px;"/>
+                                <h:message for="ape"/>
+                                <h:outputLabel value="Fecha"/>
+                                <p:calendar id="date" value="#{personaBean.persona.fecha}" effect="pulsate" label="Fecha requerida" required="true" a:placeholder="FECHA" mindate="#{personaBean.persona.mindate}" maxdate="#{personaBean.persona.maxdate}" styleClass="calendarClass" readonlyInput="true"/>
+                                <h:message for="date"/> 
+                            </h:panelGrid>
+
+                            <h:column>
+                                <h:commandButton value="MOSTRAR" class="btn btn-success btn-group-lg" actionListener="#{personaBean.mostrarPersona()}"/> 
+                            </h:column>
+                        </p:panel>
+                        <h:dataTable value="#{personaBean.lstPersonas}" class="table table-striped" var="per" rendered="#{personaBean.lstPersonas.size() > 0 eq true}">
+                            <h:column >
+                                <f:facet name="header">
+                                    <h:outputLabel value="Tipo de documento"/>
+                                </f:facet>
+                                <h:outputLabel value="#{per.cedula}"/>
+                            </h:column>
+                            <h:column >
+                                <f:facet name="header">
+                                    <h:outputLabel value="Numero de identificacion"/>
+                                </f:facet>
+                                <h:outputLabel value="#{per.numero}"/>
+                            </h:column>
+                            <h:column >
+                                <f:facet name="header">
+                                    <h:outputLabel value="Nombre"/>
+                                </f:facet>
+                                <h:outputText value="#{per.nombre}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="Apellido"/>
+                                </f:facet>
+                                <h:outputLabel class="" value="#{per.apellido}"/>
+                            </h:column>    
+                            <h:column >
+                                <f:facet name="header">
+                                    <h:outputLabel value="Sexo"/>
+                                </f:facet>
+                                <h:outputText id="sexo" value="#{per.sexo()}"/>
+                            </h:column>
+                            <h:column >
+                                <f:facet name="header">
+                                    <h:outputLabel value="Fecha"/>
+                                </f:facet>
+                                <h:outputText value="#{per.fecha}">
+                                    <f:convertDateTime pattern="yyyy/MM/dd"/>
+                                </h:outputText>
+                            </h:column>
+                            <!--<h:column>
+                                <h:commandLink actionListener="#{personaBean.editarPersona()}" value="EDITAR"/>
+                            </h:column>-->
+                            <h:column >
+                                <h:commandLink class="btn btn-danger" value="ELIMINAR" actionListener="#{personaBean.personaEliminar(per)}"/>
+                            </h:column>  
+                        </h:dataTable>
+                    </h:form>
+                </center>
+            </h:body>
+
+
+
+
+        </html>
+    </h:body>
+</html>
+
